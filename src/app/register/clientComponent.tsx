@@ -12,6 +12,7 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { AuthStore } from "@/features/store/authStore";
+import { signIn } from "next-auth/react";
 
 const formSchema = z
   .object({
@@ -79,8 +80,10 @@ const RegisterPageClientComponent = () => {
   };
 
   const onSubmitWithGoogle = () => {
-    const data = { open_id: "google" };
-    console.log(data);
+    signIn("google", {
+      callbackUrl: "/",
+      redirect: false,
+    });
   };
 
   return (
