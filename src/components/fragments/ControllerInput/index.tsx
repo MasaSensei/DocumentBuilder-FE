@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import Core from "@/core";
+import Core from "@/components/core";
 import { Controller, FieldValues } from "react-hook-form";
 
 interface Option {

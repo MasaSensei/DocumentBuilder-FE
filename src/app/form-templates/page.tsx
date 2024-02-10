@@ -1,5 +1,5 @@
-import Core from "@/core";
-import Layouts from "@/layouts";
+import Core from "@/components/core";
+import Layouts from "@/components/layouts";
 
 const FormTemplatesPage = () => {
   return (

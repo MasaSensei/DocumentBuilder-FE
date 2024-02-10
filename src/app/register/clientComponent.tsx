@@ -4,13 +4,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Layouts from "@/layouts";
+import Layouts from "@/components/layouts";
 import { Button } from "@/components/ui/button";
-import Fragments from "@/fragments";
+import Fragments from "@/components/fragments";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { AuthStore } from "@/features/store/authStore";
 
 const formSchema = z
   .object({
@@ -36,10 +37,12 @@ const formSchema = z
 
 const RegisterPageClientComponent = () => {
   const router = useRouter();
+  const { register } = AuthStore();
   const {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -65,13 +68,18 @@ const RegisterPageClientComponent = () => {
     },
   ];
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    const newData = { ...data, openID: "email" };
-    console.log(newData);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      await register(data.email, data.password);
+      reset();
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmitWithGoogle = () => {
-    const data = { openId: "google" };
+    const data = { open_id: "google" };
     console.log(data);
   };
 

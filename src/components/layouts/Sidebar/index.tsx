@@ -3,7 +3,7 @@
 import { FaArrowRight } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
 import { useState } from "react";
-import Fragments from "@/fragments";
+import Fragments from "@/components/fragments";
 
 const SideBar = () => {
   const [show, setShow] = useState(false);
