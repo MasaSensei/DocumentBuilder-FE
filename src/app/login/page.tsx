@@ -1,7 +1,9 @@
+import LoginPageClientComponent from "./clientComponent";
+
 const LoginPage = () => {
   return (
     <>
-      <h1>Login</h1>
+      <LoginPageClientComponent />
     </>
   );
 };

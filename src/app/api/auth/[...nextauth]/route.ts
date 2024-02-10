@@ -42,9 +42,6 @@ const authOptions: NextAuthOptions = {
       }
     },
   },
-  pages: {
-    signIn: "/register",
-  },
 };
 
 const handler = NextAuth(authOptions);

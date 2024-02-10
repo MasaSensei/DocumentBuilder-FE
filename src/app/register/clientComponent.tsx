@@ -155,7 +155,7 @@ const RegisterPageClientComponent = () => {
                 router.back();
               }}
             >
-              <FaArrowLeft />
+              <FaArrowLeft /> <span className="text-sm ml-2">Go Back</span>
             </Button>
           </div>
         </div>
