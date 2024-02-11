@@ -4,6 +4,7 @@ import Layouts from "@/components/layouts";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +20,10 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {!disablePath.includes(path) && <Layouts.Header />}
-        {children}
+        <SessionProvider>
+          {!disablePath.includes(path) && <Layouts.Header />}
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

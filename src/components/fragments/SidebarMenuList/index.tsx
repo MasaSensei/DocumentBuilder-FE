@@ -2,58 +2,100 @@
 
 import { MdKeyboardArrowRight, MdKeyboardArrowDown } from "react-icons/md";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const SidebarMenuList = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSelected, setIsSelected] = useState("");
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleSelect = (e: any) => {
+    setIsSelected(e.target.value);
+  };
+
   return (
     <>
-      <button
-        className="btn w-full flex items-center justify-between text-sm lg:text-md leading-3 border-b border-gray-200"
-        style={{ margin: "24px 8px" }}
+      <Button
+        className="w-full flex items-center bg-transparent hover:bg-transparent shadow-none text-slate-800 justify-between text-sm lg:text-md leading-3 border-b rounded-none border-gray-200 py-6 px-2"
         onClick={handleOpen}
       >
         <strong className="font-bold text-left">Kategori</strong>
         <span className="ml-auto flex items-center">
-          <span className="shrink-0 text-sm" style={{ paddingRight: "20px" }}>
-            Baru
-          </span>
+          <span className="shrink-0 text-sm pr-6 text-slate-400">Baru</span>
           <i className="ml-4 flex">
             {isOpen ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />}
           </i>
         </span>
-      </button>
+      </Button>
       {isOpen && (
-        <ul className="pb-6 text-sm lg:text-md lg:leading-3 border-b border-gray-200">
-          <li style={{ marginLeft: "8px" }}>
-            <label
-              htmlFor="popular"
-              className="flex items-center"
-              style={{ padding: "8px" }}
-            >
-              <input type="radio" name="popular" id="popular" />
-              <span className="text-lime-100" style={{ marginLeft: "10px" }}>
-                Populer
-              </span>
-            </label>
-          </li>
-          <li style={{ marginLeft: "8px" }}>
-            <label
+        <ul className="py-6 text-sm lg:text-md lg:leading-3 border-b border-gray-200">
+          <li>
+            <Label
               htmlFor="baru"
-              className="flex items-center"
-              style={{ padding: "8px" }}
+              className={`flex items-center justify-start p-1 rounded-lg ${
+                isSelected === "baru"
+                  ? "bg-lime-500 hover:bg-lime-600"
+                  : "bg-transparent"
+              }`}
             >
-              <input type="radio" name="baru" id="baru" />
-              <span className="text-lime-100" style={{ marginLeft: "10px" }}>
+              <Input
+                id="baru"
+                type={"radio"}
+                value="baru"
+                className="w-4"
+                onChange={handleSelect}
+                name="options"
+              />
+              <span
+                className={`${
+                  isSelected !== "baru" ? "text-black" : "text-lime-100"
+                } ml-2.5 accent-neutral-600`}
+              >
                 Baru
               </span>
-            </label>
+            </Label>
+          </li>
+          <li>
+            <Label
+              htmlFor="popular"
+              className={`flex items-center justify-start p-1 rounded-lg ${
+                isSelected === "popular"
+                  ? "bg-lime-500 hover:bg-lime-600"
+                  : "bg-transparent"
+              }`}
+            >
+              <Input
+                id="popular"
+                type={"radio"}
+                value="popular"
+                className="w-4"
+                onChange={handleSelect}
+                name="options"
+              />
+              <span
+                className={`${
+                  isSelected !== "popular" ? "text-black" : "text-lime-100"
+                } ml-2.5 accent-neutral-600`}
+              >
+                Popular
+              </span>
+            </Label>
           </li>
         </ul>
       )}
+      <Button
+        className="flex items-center my-10 md:my-6 p-3 bg-slate-700 hover:bg-slate-800 text-white rounded-lg"
+        asChild
+      >
+        <Link href={"/"}>My Documents</Link>
+      </Button>
     </>
   );
 };

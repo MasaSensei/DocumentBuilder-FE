@@ -7,13 +7,22 @@ const Card = () => {
     <div className="text-left inline-block shrink-0 sm:mx-0 align-top max-w-92 mx-auto w-full">
       <div className="flex flex-col items-start px-2.5 lg:px-5 mb-12 mt-4">
         <div className="w-full relative rounded-lg overflow-hidden">
-          <Image
-            src="/images/Rudeus Greyrat - Mushoku Tensei II icons.jpeg"
-            alt="cover"
-            width={300}
-            height={300}
-            className="w-full rounded-lg"
-          />
+          <div className="h-full group relative">
+            <Link href={"/"} className="h-full block text-white">
+              <div className="group-hover:opacity-90 group-hover:-translate-y-4 opacity-0 absolute top-1/2 right-0 left-0 w-full flex z-4 duration-700 items-center justify-center pointer-events-none transform">
+                <span className="rounded-full inline-flex bg-slate-800 border border-gray-300 gap-1 items-center justify-center py-2.5 px-4">
+                  <span className="text-white text-md">View Details</span>
+                </span>
+              </div>
+              <Image
+                src="/images/Rudeus Greyrat - Mushoku Tensei II icons.jpeg"
+                alt="cover"
+                width={300}
+                height={300}
+                className="w-full rounded-lg"
+              />
+            </Link>
+          </div>
           <Link href={"/"} className="max-w-full truncate">
             <h3 className="font-bold truncate mb-2 mt-4 text-2xl lg:text-lg">
               Product Order Form
@@ -62,12 +71,12 @@ const Card = () => {
           <div className="mt-6 w-full">
             <Button
               asChild
-              className="w-full h-11 group hover:bg-lime-500 rounded-xl border-lime-500"
+              className="w-full h-11 hover:bg-lime-500 rounded-xl border-lime-500"
               variant={"outline"}
             >
               <Link
                 href={"/"}
-                className="w-full h-full font-bold text-md text-lime-500 group-hover:text-white uppercase"
+                className="w-full h-full font-bold text-md text-lime-500 hover:text-white uppercase"
               >
                 Use Template
               </Link>

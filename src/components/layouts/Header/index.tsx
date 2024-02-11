@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="shrink z-[1000] bg-slate-800 block w-full max-w-screen relative">
+    <header className="shrink bg-slate-800 block w-full max-w-screen relative">
       <nav className="container">
         <div className="flex w-full my-0 mx-auto justify-between items-center lg:m-auto">
           <div className="flex items-center p-0 m-0">
@@ -23,7 +23,7 @@ const Header = () => {
             <div>
               <ul className="flex flex-nowrap justify-end items-center m-0">
                 <li className="relative cursor-pointer">
-                  <Link href={"/"} className="text-white">
+                  <Link href={"/mydocuments"} className="text-white">
                     My Form
                   </Link>
                 </li>

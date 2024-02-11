@@ -1,11 +1,23 @@
 import axios from "axios";
-import { Account, NextAuthOptions, Profile, User } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 
 const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+  },
+  cookies: {
+    sessionToken: {
+      name: "token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   providers: [
     GoogleProvider({
@@ -14,32 +26,51 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user }: { user: User }) {
+    async jwt({
+      user,
+      token,
+      account,
+    }: {
+      user: User;
+      token: JWT;
+      account: any;
+    }) {
       try {
-        const response = await axios.post(
-          `http://localhost:3000/api/register`,
-          {
-            email: user.email,
+        if (account) {
+          const data = {
             username: user.name,
+            email: user.email,
             open_id: "google",
-          }
-        );
+          };
 
-        console.log(response.data);
-        // if (response.status === 200 && response.data.data.token) {
-        //   sessionStorage.setItem("token", response.data.data.token);
-        //   console.log("Email:", user.email);
-        //   console.log("Username:", user.name);
-        //   return true;
-        // } else {
-        //   console.log(response);
-        //   return false;
-        // }
-        return true;
+          // Mengirim data pengguna ke server menggunakan axios
+          const response = await axios.post(
+            `${process.env.DEV_LOCAL}/api/v1/login-or-register`,
+            data
+          );
+
+          if (response.status === 200) {
+            const responseData = response?.data?.data?.token; // Ambil token dari respons
+            return {
+              ...token,
+              accessToken: responseData,
+            };
+          } else {
+            console.error("Failed to login/register:", response.data.message);
+          }
+        }
+
+        return token;
       } catch (error) {
-        console.log(error);
-        return false;
+        console.log("Error during API call:", error);
+        return { success: false, token: null };
       }
+    },
+    async session({ session, token }: { session: any; token: JWT }) {
+      if (token) {
+        session.user = token;
+      }
+      return session;
     },
   },
 };

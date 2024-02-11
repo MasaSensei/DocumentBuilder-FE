@@ -1,5 +1,10 @@
 import Core from "@/components/core";
 import Layouts from "@/components/layouts";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Form Templates",
+};
 
 const FormTemplatesPage = () => {
   return (

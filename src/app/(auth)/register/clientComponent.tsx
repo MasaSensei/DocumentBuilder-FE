@@ -13,6 +13,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { AuthStore } from "@/features/store/authStore";
 import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const formSchema = z
   .object({
@@ -37,6 +38,8 @@ const formSchema = z
   });
 
 const RegisterPageClientComponent = () => {
+  const { data: session } = useSession();
+  console.log(session?.user);
   const router = useRouter();
   const { register } = AuthStore();
   const {
@@ -79,11 +82,20 @@ const RegisterPageClientComponent = () => {
     }
   };
 
-  const onSubmitWithGoogle = () => {
-    signIn("google", {
-      callbackUrl: "/",
-      redirect: false,
-    });
+  const onSubmitWithGoogle = async () => {
+    try {
+      const response = await signIn("google", {
+        callbackUrl: "/",
+        redirect: false,
+      });
+
+      if (response?.status === 200) {
+        console.log("Response status:", response.status);
+        // console.log(apiToken);
+      }
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
   };
 
   return (
