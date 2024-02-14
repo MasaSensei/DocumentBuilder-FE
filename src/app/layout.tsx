@@ -17,12 +17,15 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
   const path = usePathname();
   const disablePath = ["/login", "/register"];
   const forgotPassword = path.includes("/forgot-password");
+  const AdminDashboard = path.includes("/admin");
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          {!disablePath.includes(path) && !forgotPassword && <Layouts.Header />}
+          {!disablePath.includes(path) &&
+            !forgotPassword &&
+            !AdminDashboard && <Layouts.Header />}
           {children}
         </SessionProvider>
       </body>
