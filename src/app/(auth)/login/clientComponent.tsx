@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ import { AuthStore } from "@/features/store/authStore";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-const formSchema = z.object({
+const loginFormSchema = z.object({
   email: z.string().email({
     message: "Invalid email address.",
   }),
@@ -24,17 +24,30 @@ const formSchema = z.object({
   }),
 });
 
+const forgotPasswordFormSchema = z.object({
+  email: z.string(),
+});
+
 const LoginPageClientComponent = () => {
   const [isClicked, setIsClicked] = useState(false);
   const router = useRouter();
-  const { register } = AuthStore();
+  const { forgotPassword, login } = AuthStore();
   const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    handleSubmit: handleLoginSubmit,
+    control: loginControl,
+    formState: { errors: loginErrors },
+    reset: resetLogin,
+  } = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+  });
+
+  const {
+    handleSubmit: handleForgetPasswordSubmit,
+    control: forgotPasswordControl,
+    formState: { errors: forgotPasswordErrors },
+    reset: resetForgotPassword,
+  } = useForm<z.infer<typeof forgotPasswordFormSchema>>({
+    resolver: zodResolver(forgotPasswordFormSchema),
   });
 
   const fields = [
@@ -56,10 +69,9 @@ const LoginPageClientComponent = () => {
     setIsClicked(true);
   };
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     try {
-      await register(data.email, data.password);
-      reset();
+      await login(data.email, data.password);
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -73,10 +85,17 @@ const LoginPageClientComponent = () => {
     });
   };
 
-  const onSubmitForgetPassword = async (data: z.infer<typeof formSchema>) => {
+  const onSubmitForgetPassword = async (
+    data: z.infer<typeof forgotPasswordFormSchema>
+  ) => {
     try {
-      console.log("test");
-      reset();
+      const res: any = await forgotPassword(data.email);
+      const response = res.hash_id;
+
+      localStorage.setItem("hashId", response);
+      localStorage.setItem("email", data.email);
+
+      resetForgotPassword();
     } catch (error) {
       console.log(error);
     }
@@ -87,7 +106,7 @@ const LoginPageClientComponent = () => {
       <section className="w-full bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white w-4/5 min-h-4/5 rounded-lg flex flex-col items-center border border-gray-200 py-12 px-2 my-0 mx-auto">
           <h2 className="lg:text-3xl text-xl text-slate-900 font-bold my-2 mx-auto">
-            {isClicked ? "Forget Password" : "Login"}
+            {isClicked ? "Forgot Password" : "Login"}
           </h2>
           {!isClicked && (
             <>
@@ -122,22 +141,35 @@ const LoginPageClientComponent = () => {
             <Layouts.Form
               onSubmit={
                 !isClicked
-                  ? handleSubmit(onSubmit)
-                  : handleSubmit(onSubmitForgetPassword)
+                  ? handleLoginSubmit(onSubmit)
+                  : handleForgetPasswordSubmit(onSubmitForgetPassword)
               }
             >
-              {fields.map((field) =>
-                !isClicked || field.name === "email" ? (
-                  <Fragments.ControllerInput
-                    key={field.name}
-                    {...field}
-                    control={control}
-                    errors={errors}
-                    type={field.type}
-                    inputClassName="mt-2 mb-5"
-                    labelClassName="my-5"
-                  />
-                ) : null
+              {isClicked && (
+                <Fragments.ControllerInput
+                  {...fields[0]}
+                  control={forgotPasswordControl}
+                  errors={forgotPasswordErrors}
+                  type={fields[0].type}
+                  inputClassName="mt-2 mb-5"
+                  labelClassName="my-5"
+                />
+              )}
+              {fields.map(
+                (field) =>
+                  !isClicked && (
+                    <Fragments.ControllerInput
+                      key={field.name}
+                      {...field}
+                      control={
+                        !isClicked ? loginControl : forgotPasswordControl
+                      }
+                      errors={!isClicked ? loginErrors : forgotPasswordErrors}
+                      type={field.type}
+                      inputClassName="mt-2 mb-5"
+                      labelClassName="my-5"
+                    />
+                  )
               )}
               {!isClicked && (
                 <div

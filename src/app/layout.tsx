@@ -16,12 +16,13 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
   const { children } = props;
   const path = usePathname();
   const disablePath = ["/login", "/register"];
+  const forgotPassword = path.includes("/forgot-password");
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <SessionProvider>
-          {!disablePath.includes(path) && <Layouts.Header />}
+          {!disablePath.includes(path) && !forgotPassword && <Layouts.Header />}
           {children}
         </SessionProvider>
       </body>
