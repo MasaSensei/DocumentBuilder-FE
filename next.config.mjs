@@ -13,6 +13,7 @@ if (existsSync(envFilePath)) {
 const nextConfig = {
   env: {
     DEV_LOCAL: process.env.DEV_LOCAL,
+    DEV_TOKEN: process.env.DEV_TOKEN,
   },
 };
 

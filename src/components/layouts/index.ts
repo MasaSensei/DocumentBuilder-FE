@@ -4,6 +4,8 @@ import Header from "./Header";
 import AdminSidebar from "./(admin)/AdminSidebar";
 import AdminHeader from "./(admin)/AdminHeader";
 import AdminFooter from "./(admin)/AdminFooter";
+import AdminBodyHeader from "./(admin)/AdminBodyHeader";
+import MyTable from "./Table";
 
 const Layouts = {
   SideBar,
@@ -12,6 +14,8 @@ const Layouts = {
   AdminSidebar,
   AdminHeader,
   AdminFooter,
+  AdminBodyHeader,
+  MyTable,
 };
 
 export default Layouts;

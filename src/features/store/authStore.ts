@@ -19,6 +19,7 @@ interface AuthStore {
 export const AuthStore = create<AuthStore>((set) => ({
   email: "",
   hashId: "",
+  token: "",
   register: async (email, password) => {
     try {
       const response = await axios.post(
@@ -50,8 +51,10 @@ export const AuthStore = create<AuthStore>((set) => ({
         }
       );
       if (response.status === 200) {
-        set({ token: response.data.data.token });
-        sessionStorage.setItem("token", response.data.data.token);
+        set({
+          token: response.data.data.token,
+          email: response.data.data.email,
+        });
       } else {
         console.log(response);
       }

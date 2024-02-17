@@ -1,8 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import Link from "next/link";
+import { AuthStore } from "@/features/store/authStore";
 
 const Header = () => {
+  const { token, email } = AuthStore((s) => ({
+    token: s.token,
+    email: s.email,
+  }));
+
+  sessionStorage.setItem("token", token || "");
   return (
     <header className="shrink bg-slate-800 block w-full max-w-screen relative">
       <nav className="container">
