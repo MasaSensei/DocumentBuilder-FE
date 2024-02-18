@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import Core from "@/components/core";
 import { Controller, FieldValues } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 interface Option {
   value: string;
@@ -15,7 +16,9 @@ interface ControllerInputProps {
   errors: any;
   inputClassName?: string;
   labelClassName?: string;
+  className?: string;
   type?: string;
+  defaultValue?: string;
   onChange?: (e: any) => void;
 }
 
@@ -30,9 +33,11 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
     inputClassName,
     onChange,
     labelClassName,
+    className,
+    defaultValue,
   } = props;
   return (
-    <div>
+    <div className={cn("mb-5", className)}>
       <Core.Label name={name} LabelclassName={labelClassName}>
         {label}
       </Core.Label>
@@ -56,11 +61,14 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
                 InputclassName={inputClassName}
                 placeholder={placeholder}
                 onChange={onChange}
+                defaultValue={defaultValue}
               />
             ) : (
               <Core.Input
                 {...field}
                 type={type}
+                onChange={onChange}
+                defaultValue={defaultValue}
                 placeholder={placeholder}
                 InputclassName={inputClassName}
               />

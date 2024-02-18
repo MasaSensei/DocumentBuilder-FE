@@ -6,9 +6,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AuthRole } from "@/features/roles/authRole";
 
-const AdminDashboardPage = () => {
+const AdminDashboardRolesPage = () => {
   const [data, setData] = useState<any[]>([]);
   const [header, setHeader] = useState<any[]>([]);
+  const [link, setLink] = useState<any[]>([]);
   const { GetData } = AuthRole();
   const token = sessionStorage.getItem("token");
 
@@ -21,6 +22,7 @@ const AdminDashboardPage = () => {
             const { created_at, updated_at, deleted_at, ...filterItem } = item;
             return filterItem;
           });
+
           const headers = Object.keys(filteredData[0]);
           const newHeaders = headers.map((header) => {
             return header
@@ -53,7 +55,7 @@ const AdminDashboardPage = () => {
           >
             <Link
               className="inline-flex items-center justify-center shrink-0 font-medium leading-none rounded-full px-5 py-0 h-12 text-[15px] ld:text-base mt-5 h-12 w-full md:mt-0 md:w-auto md:ms-auto"
-              href="/"
+              href="/admin/roles/create"
             >
               + Add Role
             </Link>
@@ -62,8 +64,8 @@ const AdminDashboardPage = () => {
       </Layouts.AdminBodyHeader>
       <div>
         <Layouts.MyTable
-          linkProperty=""
-          link="/"
+          link={`/admin/roles`}
+          linkProperty="id"
           headers={header}
           cells={data}
         />
@@ -72,4 +74,4 @@ const AdminDashboardPage = () => {
   );
 };
 
-export default AdminDashboardPage;
+export default AdminDashboardRolesPage;

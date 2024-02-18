@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   TableBody,
   TableCell,
@@ -6,15 +7,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { HiMiniPencilSquare } from "react-icons/hi2";
+import { HiMiniPencilSquare, HiOutlineTrash } from "react-icons/hi2";
 
 interface MyTableBodyProps {
   headers: any;
   cells: any;
+  link: string;
+  linkProperty: string;
+  onClick?: () => void;
+  type?: any;
 }
 
 const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
-  const { headers, cells } = props;
+  const { headers, cells, link, onClick, type, linkProperty } = props;
 
   return (
     <>
@@ -47,11 +52,14 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
             <TableCell className="py-3 first:rounded-bl last:rounded-br px-4 text-lg text-slate-800">
               <div className="inline-flex items-center w-auto gap-3">
                 <Link
-                  href={"/"}
+                  href={`${link}/${row[linkProperty]}/edit`}
                   className="text-base transition duration-300 hover:text-lime-500"
                 >
                   <HiMiniPencilSquare className="w-6 h-6" />
                 </Link>
+                <Button className="text-base bg-transparent shadow-none hover:bg-transparent transition duration-300 text-red-500 hover:text-red-600">
+                  <HiOutlineTrash className="w-6 h-6" />
+                </Button>
               </div>
             </TableCell>
           </TableRow>
