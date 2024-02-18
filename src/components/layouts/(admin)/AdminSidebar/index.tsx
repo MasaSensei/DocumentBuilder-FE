@@ -18,6 +18,13 @@ const AdminSidebar = () => {
                 <span className="transition"></span>
                 <span>Dashboard</span>
               </Link>
+              <Link
+                href={"/admin/roles"}
+                className="group flex w-full items-center gap-2.5 rounded-md px-3 py-2.5 text-sm text-white text-start focus:text-white hover:bg-lime-500 font-medium"
+              >
+                <span className="transition"></span>
+                <span>Roles</span>
+              </Link>
             </div>
           </div>
         </div>

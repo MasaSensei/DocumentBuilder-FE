@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AuthRole } from "@/features/roles/authRole";
+import { AuthStore } from "@/features/store/authStore";
 
 const AdminDashboardRolesPage = () => {
+  const { token } = AuthStore((s) => ({
+    token: s.token,
+  }));
   const [data, setData] = useState<any[]>([]);
   const [header, setHeader] = useState<any[]>([]);
   const [link, setLink] = useState<any[]>([]);
   const { GetData } = AuthRole();
-  const token = sessionStorage.getItem("token");
+
   useEffect(() => {
     const getData = async () => {
       try {

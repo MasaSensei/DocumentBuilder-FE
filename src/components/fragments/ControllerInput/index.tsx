@@ -2,6 +2,7 @@ import { Label } from "@/components/ui/label";
 import Core from "@/components/core";
 import { Controller, FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Option {
   value: string;
@@ -20,6 +21,7 @@ interface ControllerInputProps {
   type?: string;
   defaultValue?: string;
   onChange?: (e: any) => void;
+  seePassword?: () => void | undefined;
 }
 
 const ControllerInput: React.FC<ControllerInputProps> = (props) => {
@@ -35,6 +37,7 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
     labelClassName,
     className,
     defaultValue,
+    seePassword,
   } = props;
   return (
     <div className={cn("mb-5", className)}>
@@ -63,13 +66,24 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
                 onChange={onChange}
               />
             ) : (
-              <Core.Input
-                {...field}
-                type={type}
-                placeholder={placeholder}
-                InputclassName={inputClassName}
-                defaultValue={defaultValue}
-              />
+              <div className="relative">
+                <Core.Input
+                  {...field}
+                  type={type}
+                  placeholder={placeholder}
+                  InputclassName={inputClassName}
+                  defaultValue={defaultValue}
+                />
+                {placeholder.toLocaleLowerCase().includes("password") && (
+                  <Core.Label
+                    LabelclassName="absolute z-10 cursor-pointer top-5 -mt-2 end-4"
+                    name={name}
+                    onClick={seePassword}
+                  >
+                    Klik
+                  </Core.Label>
+                )}
+              </div>
             )}
           </div>
         )}

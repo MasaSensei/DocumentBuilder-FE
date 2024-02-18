@@ -30,6 +30,7 @@ const forgotPasswordFormSchema = z.object({
 
 const LoginPageClientComponent = () => {
   const [isClicked, setIsClicked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { forgotPassword, login } = AuthStore();
   const {
@@ -50,6 +51,10 @@ const LoginPageClientComponent = () => {
     resolver: zodResolver(forgotPasswordFormSchema),
   });
 
+  const handleSeePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const fields = [
     {
       name: "email",
@@ -59,7 +64,7 @@ const LoginPageClientComponent = () => {
     },
     {
       name: "password",
-      type: "password",
+      type: showPassword ? "text" : "password",
       label: "Password",
       placeholder: "Password",
     },
@@ -72,7 +77,8 @@ const LoginPageClientComponent = () => {
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     try {
       await login(data.email, data.password);
-      router.push("/");
+      router.push("/admin");
+      resetLogin();
     } catch (error) {
       console.log(error);
     }
@@ -85,16 +91,17 @@ const LoginPageClientComponent = () => {
     });
   };
 
+  const { email, hashId } = AuthStore((s) => ({
+    email: s.email,
+    hashId: s.hashId,
+  }));
+
   const onSubmitForgetPassword = async (
     data: z.infer<typeof forgotPasswordFormSchema>
   ) => {
     try {
-      const res: any = await forgotPassword(data.email);
-      const response = res.hash_id;
-
-      localStorage.setItem("hashId", response);
-      localStorage.setItem("email", data.email);
-
+      await forgotPassword(data.email);
+      router.push(`/forgot-password/${hashId}/reset`);
       resetForgotPassword();
     } catch (error) {
       console.log(error);
@@ -151,7 +158,7 @@ const LoginPageClientComponent = () => {
                   control={forgotPasswordControl}
                   errors={forgotPasswordErrors}
                   type={fields[0].type}
-                  inputClassName="mt-2"
+                  inputClassName="mt-2 relative"
                   labelClassName="my-5"
                 />
               )}
@@ -168,6 +175,7 @@ const LoginPageClientComponent = () => {
                       type={field.type}
                       inputClassName="mt-2 mb-5"
                       labelClassName="my-5"
+                      seePassword={handleSeePassword}
                     />
                   )
               )}

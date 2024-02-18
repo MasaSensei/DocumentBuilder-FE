@@ -7,6 +7,7 @@ import { AuthRole } from "@/features/roles/authRole";
 import { z } from "zod";
 import CommandRole, { commandRoleSchema } from "./commandRole";
 import { useRouter } from "next/navigation";
+import { AuthStore } from "@/features/store/authStore";
 
 const fields = [
   {
@@ -23,7 +24,9 @@ const CommandRoles = () => {
   const { GetDataById, UpdateData } = AuthRole();
   const param = useParams();
   const id = param.role[0];
-  const token = sessionStorage.getItem("token");
+  const { token } = AuthStore((s) => ({
+    token: s.token,
+  }));
 
   useEffect(() => {
     const fetchData = async () => {

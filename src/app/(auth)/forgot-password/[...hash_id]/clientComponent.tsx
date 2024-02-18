@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,12 @@ const loginFormSchema = z
 
 const ForgotPasswordClientComponent = () => {
   const router = useRouter();
+  const [seePassword, setSeePassword] = useState(false);
   const { resetPassword } = AuthStore();
+  const { email, hashId } = AuthStore((s) => ({
+    email: s.email,
+    hashId: s.hashId,
+  }));
 
   const {
     handleSubmit: handleLoginSubmit,
@@ -46,13 +51,13 @@ const ForgotPasswordClientComponent = () => {
   const fields = [
     {
       name: "password",
-      type: "password",
+      type: seePassword ? "text" : "password",
       label: "Password",
       placeholder: "Password",
     },
     {
       name: "confirmPassword",
-      type: "password",
+      type: seePassword ? "text" : "password",
       label: "Confirm Password",
       placeholder: "Confirm Password",
     },
@@ -60,18 +65,16 @@ const ForgotPasswordClientComponent = () => {
 
   const onSubmit = async (data: z.infer<typeof loginFormSchema>) => {
     try {
-      await resetPassword(
-        localStorage.getItem("email") as string,
-        data.password,
-        localStorage.getItem("hashId") as string
-      );
-      localStorage.removeItem("email");
-      localStorage.removeItem("hashId");
+      await resetPassword(email as string, data.password, hashId as string);
       router.push("/login");
       resetLogin();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSeePassword = () => {
+    setSeePassword(!seePassword);
   };
 
   return (
@@ -92,6 +95,7 @@ const ForgotPasswordClientComponent = () => {
                   type={field.type}
                   inputClassName="mt-2 mb-5"
                   labelClassName="my-5"
+                  seePassword={handleSeePassword}
                 />
               ))}
 
