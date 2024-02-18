@@ -61,16 +61,14 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
                 InputclassName={inputClassName}
                 placeholder={placeholder}
                 onChange={onChange}
-                defaultValue={defaultValue}
               />
             ) : (
               <Core.Input
                 {...field}
                 type={type}
-                onChange={onChange}
-                defaultValue={defaultValue}
                 placeholder={placeholder}
                 InputclassName={inputClassName}
+                defaultValue={defaultValue}
               />
             )}
           </div>

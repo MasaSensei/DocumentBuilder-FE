@@ -17,7 +17,6 @@ const AdminDashboardLayout: React.FC<AdminDashboardLayoutProps> = (props) => {
           </aside>
           <main className="relative flex w-full flex-col justify-start transition-[padding] duration-300 pt-[72px] lg:pt-20 lg:pl-72 lg:pl-0">
             <div className="h-full p-5 md:p-8">{children}</div>
-            <Layouts.AdminFooter />
           </main>
         </div>
       </div>

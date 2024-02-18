@@ -13,8 +13,19 @@ const createRoleSchema = z.object({
   name: z.string(),
 });
 
-const AdminCreateRole = () => {
-  const { PostData } = AuthRole();
+interface EditRoleProps {
+  fields: {
+    name: string;
+    type: string;
+    label: string;
+    placeholder: string;
+  }[];
+  defaultValues: any;
+}
+
+const AdminEditRole: React.FC<EditRoleProps> = (props) => {
+  const { fields, defaultValues } = props;
+  const { PostData, UpdateData } = AuthRole();
   const router = useRouter();
   const {
     handleSubmit: handleCreateRoleSubmit,
@@ -24,20 +35,16 @@ const AdminCreateRole = () => {
     resolver: zodResolver(createRoleSchema),
   });
 
-  const fields = [
-    {
-      name: "name",
-      type: "text",
-      label: "Name",
-      placeholder: "Enter Role Name",
-    },
-  ];
-
   const onSubmit = async (data: z.infer<typeof createRoleSchema>) => {
     try {
+      const defaultData = defaultValues.name;
+      console.log(defaultData);
+      const newData = data.name !== "" ? data.name : defaultValues.name;
+      console.log({ name: newData });
+      console.log(data);
       const token = sessionStorage.getItem("token");
-      await PostData(data.name, token);
-      router.push("/admin/roles");
+      // await UpdateData(data.name, token);
+      // router.push("/admin/roles");
     } catch (err) {
       console.log(err);
     }
@@ -56,6 +63,7 @@ const AdminCreateRole = () => {
                 key={field.name}
                 {...field}
                 control={createRoleControl}
+                defaultValue={defaultValues[field.name]}
                 errors={createRoleErrors}
                 inputClassName="focus:border-lime-500 rounded mt-3"
               />
@@ -72,4 +80,4 @@ const AdminCreateRole = () => {
   );
 };
 
-export default AdminCreateRole;
+export default AdminEditRole;

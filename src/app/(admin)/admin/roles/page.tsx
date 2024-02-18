@@ -12,7 +12,6 @@ const AdminDashboardRolesPage = () => {
   const [link, setLink] = useState<any[]>([]);
   const { GetData } = AuthRole();
   const token = sessionStorage.getItem("token");
-
   useEffect(() => {
     const getData = async () => {
       try {

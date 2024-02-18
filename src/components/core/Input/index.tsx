@@ -16,8 +16,8 @@ const MyInput: React.FC<MyInputProps> = (props) => {
         placeholder={placeholder}
         className={cn("w-full border rounded-md py-0 px-6 h-9", InputclassName)}
         onChange={onChange}
-        defaultValue={defaultValue}
         type={type}
+        defaultValue={defaultValue}
       />
     </>
   );

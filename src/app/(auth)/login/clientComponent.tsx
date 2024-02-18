@@ -16,8 +16,12 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 const loginFormSchema = z.object({
-  email: z.string(),
-  password: z.string(),
+  email: z.string().email({
+    message: "Please enter a valid email",
+  }),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters",
+  }),
 });
 
 const forgotPasswordFormSchema = z.object({
