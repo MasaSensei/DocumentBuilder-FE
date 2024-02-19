@@ -9,7 +9,6 @@ const Header = () => {
     email: s.email,
   }));
 
-  sessionStorage.setItem("token", token || "");
   return (
     <header className="shrink bg-slate-800 block w-full max-w-screen relative">
       <nav className="container">

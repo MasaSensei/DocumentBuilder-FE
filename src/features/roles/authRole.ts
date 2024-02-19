@@ -97,4 +97,24 @@ export const AuthRole = create<AuthRole>((set) => ({
       console.log(error);
     }
   },
+  DeleteData: async (id: string, token: string) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.DEV_LOCAL}/api/v1/crud/role/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log(response);
+        return response;
+      } else {
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
 }));

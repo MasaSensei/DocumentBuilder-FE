@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import AdminCreateRole from "./createRole";
 import { AuthRole } from "@/features/roles/authRole";
 import { z } from "zod";
 import CommandRole, { commandRoleSchema } from "./commandRole";
@@ -21,7 +20,7 @@ const fields = [
 const CommandRoles = () => {
   const [name, setName] = useState("");
   const router = useRouter();
-  const { GetDataById, UpdateData } = AuthRole();
+  const { GetDataById, UpdateData, PostData } = AuthRole();
   const param = useParams();
   const id = param.role[0];
   const { token } = AuthStore((s) => ({
@@ -46,19 +45,34 @@ const CommandRoles = () => {
   const onSubmitEditRole = async (data: z.infer<typeof commandRoleSchema>) => {
     try {
       const defaultData = name;
-      console.log(defaultData);
       const newData = data.name !== "" ? data.name : defaultData;
-      const token = sessionStorage.getItem("token");
       await UpdateData(id, newData, token);
       router.push("/admin/roles");
     } catch {
       console.log("error");
     }
   };
+
+  const onSubmitCreateRole = async (
+    data: z.infer<typeof commandRoleSchema>
+  ) => {
+    try {
+      await PostData(data.name, token);
+      router.push("/admin/roles");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {param.role[0] === "create" ? (
-        <AdminCreateRole />
+        <CommandRole
+          fields={fields}
+          title="Create Role"
+          defaultValues={""}
+          onSubmit={onSubmitCreateRole as any}
+          desription="Add your role details and necessary information from here"
+        />
       ) : param.role[1] === "edit" ? (
         <CommandRole
           fields={fields}

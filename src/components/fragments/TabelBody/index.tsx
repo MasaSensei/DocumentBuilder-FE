@@ -1,3 +1,4 @@
+import Core from "@/components/core";
 import { Button } from "@/components/ui/button";
 import {
   TableBody,
@@ -14,7 +15,7 @@ interface MyTableBodyProps {
   cells: any;
   link: string;
   linkProperty: string;
-  onClick?: () => void;
+  onClick?: (id: string) => void | undefined;
   type?: any;
 }
 
@@ -57,9 +58,16 @@ const MyTableBody: React.FC<MyTableBodyProps> = (props) => {
                 >
                   <HiMiniPencilSquare className="w-6 h-6" />
                 </Link>
-                <Button className="text-base bg-transparent shadow-none hover:bg-transparent transition duration-300 text-red-500 hover:text-red-600">
-                  <HiOutlineTrash className="w-6 h-6" />
-                </Button>
+                <Core.Alert
+                  onClick={() => onClick && onClick(row[linkProperty])}
+                  title="Delete"
+                  desription="Are you sure you want to delete this item?"
+                  action="Delete"
+                >
+                  <Button className="text-base bg-transparent shadow-none hover:bg-transparent transition duration-300 text-red-500 hover:text-red-600">
+                    <HiOutlineTrash className="w-6 h-6" />
+                  </Button>
+                </Core.Alert>
               </div>
             </TableCell>
           </TableRow>

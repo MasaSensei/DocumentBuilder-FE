@@ -1,8 +1,7 @@
-import { Label } from "@/components/ui/label";
 import Core from "@/components/core";
 import { Controller, FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface Option {
   value: string;
@@ -80,7 +79,7 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
                     name={name}
                     onClick={seePassword}
                   >
-                    Klik
+                    {type === "password" ? <FaEyeSlash /> : <FaEye />}
                   </Core.Label>
                 )}
               </div>

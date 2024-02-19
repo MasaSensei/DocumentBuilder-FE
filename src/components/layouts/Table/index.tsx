@@ -6,17 +6,19 @@ interface TableProps {
   cells: any;
   link: string;
   linkProperty: string;
+  onClick?: () => void;
 }
 
 const MyTable: React.FC<TableProps> = (props) => {
-  const { headers, cells, link, linkProperty } = props;
+  const { headers, cells, link, linkProperty, onClick } = props;
   return (
-    <Table className="w-[1000px] min-w-full table-fixed">
+    <Table className="lg:w-[1000px] w-full min-w-full table-fixed">
       <Fragments.MyTableBody
         headers={headers}
         cells={cells}
         linkProperty={linkProperty}
         link={link}
+        onClick={onClick}
       />
     </Table>
   );

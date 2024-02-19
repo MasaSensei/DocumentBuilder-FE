@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AuthRole } from "@/features/roles/authRole";
 
+import "react-toastify/dist/ReactToastify.css";
+
 const AdminDashboardPage = () => {
   const [data, setData] = useState<any[]>([]);
   const [header, setHeader] = useState<any[]>([]);

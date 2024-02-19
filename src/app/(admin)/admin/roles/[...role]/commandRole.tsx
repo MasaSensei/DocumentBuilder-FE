@@ -37,7 +37,7 @@ const CommandRole: React.FC<CommandRoleProps> = (props) => {
   });
   return (
     <>
-      <Core.AdminBreadcrumbs>Create New Role</Core.AdminBreadcrumbs>
+      <Core.AdminBreadcrumbs>{title}</Core.AdminBreadcrumbs>
       <Layouts.Form onSubmit={handleCommandRoleSubmit(onSubmit)}>
         <Layouts.AdminCommandDataTabel>
           <Fragments.AdminFormDataTabel title={title} desription={desription}>

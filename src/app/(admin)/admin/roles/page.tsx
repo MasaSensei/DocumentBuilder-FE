@@ -6,15 +6,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AuthRole } from "@/features/roles/authRole";
 import { AuthStore } from "@/features/store/authStore";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
+import "react-toastify/dist/ReactToastify.css";
+import Core from "@/components/core";
 
 const AdminDashboardRolesPage = () => {
   const { token } = AuthStore((s) => ({
     token: s.token,
   }));
+  const router = useRouter();
+  const [originData, setOriginData] = useState<any[]>([]);
   const [data, setData] = useState<any[]>([]);
   const [header, setHeader] = useState<any[]>([]);
-  const [link, setLink] = useState<any[]>([]);
-  const { GetData } = AuthRole();
+  const { GetData, DeleteData } = AuthRole();
 
   useEffect(() => {
     const getData = async () => {
@@ -33,15 +39,61 @@ const AdminDashboardRolesPage = () => {
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" ");
           });
+          setOriginData(filteredData);
           setData(filteredData);
           setHeader(newHeaders);
         }
+        router.refresh();
       } catch (error) {
         console.log(error);
       }
     };
     getData();
   }, [token]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      const data = await DeleteData?.(id, token || "");
+      if (data?.data?.code === 200) {
+        toast.success("Delete Success", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        router.refresh();
+      } else {
+        toast.warning("Delete Failed", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = (searchItem: string) => {
+    const filteredData = originData.filter((item) =>
+      Object.values(item)
+        .join(" ")
+        .toLowerCase()
+        .includes(searchItem.toLowerCase())
+    );
+    setData(filteredData);
+  };
 
   return (
     <>
@@ -51,7 +103,12 @@ const AdminDashboardRolesPage = () => {
             Roles
           </h2>
         </div>
-        <div className="flex flex-col w-full items-center ms-auto md:w-3/4 md:flex-row xl:w-2/4">
+        <div className="flex flex-col w-full items-center justify-center gap-4 ms-auto md:w-3/4 md:flex-row xl:w-2/4">
+          <Core.Input
+            InputclassName="block rounded-lg text-sm placeholder:text-white text-white focus:border-lime-500 focus:bg-slate-800 bg-gray-600"
+            placeholder="Search By Name"
+            onChange={(e) => handleSearch(e.target.value)}
+          />
           <Button
             asChild
             className="rounded-full bg-white text-black hover:bg-lime-500 hover:text-white"
@@ -71,8 +128,22 @@ const AdminDashboardRolesPage = () => {
           linkProperty="id"
           headers={header}
           cells={data}
+          onClick={handleDelete as any}
         />
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 };
