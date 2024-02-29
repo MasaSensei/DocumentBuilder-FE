@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import axios from "axios";
-import { AuthStore } from "../store/authStore";
 
 interface AuthRole {
   GetData: (token: any) => Promise<any>;

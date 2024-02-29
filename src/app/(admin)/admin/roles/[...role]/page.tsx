@@ -7,6 +7,7 @@ import { z } from "zod";
 import CommandRole, { commandRoleSchema } from "./commandRole";
 import { useRouter } from "next/navigation";
 import { AuthStore } from "@/features/store/authStore";
+import { notFound } from "next/navigation";
 
 const fields = [
   {
@@ -82,7 +83,7 @@ const CommandRoles = () => {
           onSubmit={onSubmitEditRole as any}
         />
       ) : (
-        <h1>404</h1>
+        notFound()
       )}
     </>
   );
