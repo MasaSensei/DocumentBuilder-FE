@@ -6,6 +6,7 @@ import AdminHeader from "./(admin)/AdminHeader";
 import AdminBodyHeader from "./(admin)/AdminBodyHeader";
 import MyTable from "./Table";
 import AdminCommandDataTabel from "./(admin)/(tabels)/CommandDataTabel";
+import AdminBodyHeaderItems from "./(admin)/AdminBodyHeaderItems";
 
 const Layouts = {
   SideBar,
@@ -16,6 +17,7 @@ const Layouts = {
   AdminBodyHeader,
   MyTable,
   AdminCommandDataTabel,
+  AdminBodyHeaderItems,
 };
 
 export default Layouts;

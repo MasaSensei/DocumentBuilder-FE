@@ -34,7 +34,6 @@ const CommandRoles = () => {
         try {
           const response = await GetDataById(id, token);
           setName(response.data.data.role_name);
-          console.log(response);
         } catch (err) {
           console.log(err);
         }
