@@ -27,6 +27,10 @@ const RootLayout: React.FC<RootLayoutProps> = (props) => {
             !forgotPassword &&
             !AdminDashboard && <Layouts.Header />}
           {children}
+
+          {!disablePath.includes(path) &&
+            !forgotPassword &&
+            !AdminDashboard && <Layouts.Footer />}
         </SessionProvider>
       </body>
     </html>

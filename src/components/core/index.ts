@@ -4,6 +4,7 @@ import MyLabel from "./Label";
 import AdminBreadcrumbs from "./(admin)/AdminBreadcrumbs";
 import AdminDataTabelButton from "./(admin)/AdminDataTabelButton";
 import Alert from "./MyAlert";
+import SelectInput from "./Select";
 
 const Core = {
   Card,
@@ -12,6 +13,7 @@ const Core = {
   AdminBreadcrumbs,
   AdminDataTabelButton,
   Alert,
+  Select: SelectInput,
 };
 
 export default Core;

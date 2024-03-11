@@ -1,59 +1,68 @@
 "use client";
 
 import Core from "@/components/core";
-import Fragments from "@/components/fragments";
 import Layouts from "@/components/layouts";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Fragments from "@/components/fragments";
 
-export const commandRoleSchema = z.object({
+export const commandMenuSchema = z.object({
   name: z.string(),
+  path: z.string(),
+  isSubmenu: z.string(),
 });
 
-interface CommandRoleProps {
+interface Option {
+  value: any;
+  label: string;
+}
+
+interface CommandMenuProps {
   fields: {
     name: string;
     type: string;
     label: string;
     placeholder: string;
+    options?: Option[];
   }[];
-  defaultValues: any;
-  onSubmit: () => void;
   title: string;
   desription: string;
+  defaultValues: any;
+  onSubmit: () => void;
 }
 
-const CommandRole: React.FC<CommandRoleProps> = (props) => {
-  const { fields, defaultValues, onSubmit, title, desription } = props;
+const CommandMenu: React.FC<CommandMenuProps> = (props) => {
+  const { title, desription, fields, defaultValues, onSubmit } = props;
   const {
-    handleSubmit: handleCommandRoleSubmit,
-    control: commandRoleControl,
-    formState: { errors: commandRoleErrors },
-  } = useForm<z.infer<typeof commandRoleSchema>>({
-    resolver: zodResolver(commandRoleSchema),
+    handleSubmit: handleCommandMenuSubmit,
+    control: commandMenuControl,
+    formState: { errors: commandMenuErrors },
+  } = useForm<z.infer<typeof commandMenuSchema>>({
+    resolver: zodResolver(commandMenuSchema),
   });
   return (
     <>
       <Core.AdminBreadcrumbs>{title}</Core.AdminBreadcrumbs>
-      <Layouts.Form onSubmit={handleCommandRoleSubmit(onSubmit)}>
+      <Layouts.Form onSubmit={handleCommandMenuSubmit(onSubmit)}>
         <Layouts.AdminCommandDataTabel>
           <Fragments.AdminFormDataTabel title={title} desription={desription}>
             {fields.map((field) => (
               <Fragments.ControllerInput
                 key={field.name}
                 {...field}
-                control={commandRoleControl}
+                control={commandMenuControl}
                 defaultValue={defaultValues[field.name]}
-                errors={commandRoleErrors}
+                errors={commandMenuErrors}
+                options={field.options}
                 inputClassName="focus:border-lime-500 rounded mt-3"
               />
             ))}
           </Fragments.AdminFormDataTabel>
         </Layouts.AdminCommandDataTabel>
         <Core.AdminDataTabelButton
-          link="/admin/roles"
-          name="Add New Role"
+          link="/admin/menus"
+          name="Add New Menu"
           type="submit"
         />
       </Layouts.Form>
@@ -61,4 +70,4 @@ const CommandRole: React.FC<CommandRoleProps> = (props) => {
   );
 };
 
-export default CommandRole;
+export default CommandMenu;

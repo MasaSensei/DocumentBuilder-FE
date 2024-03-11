@@ -2,6 +2,7 @@ import Core from "@/components/core";
 import { Controller, FieldValues } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { SelectItem } from "@/components/ui/select";
 
 interface Option {
   value: string;
@@ -10,7 +11,7 @@ interface Option {
 
 interface ControllerInputProps {
   name: string;
-  label: string;
+  label?: string;
   control: any;
   placeholder: string;
   errors: any;
@@ -19,6 +20,7 @@ interface ControllerInputProps {
   className?: string;
   type?: string;
   defaultValue?: string;
+  options?: Option[];
   onChange?: (e: any) => void;
   seePassword?: () => void | undefined;
 }
@@ -36,6 +38,7 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
     labelClassName,
     className,
     defaultValue,
+    options,
     seePassword,
   } = props;
   return (
@@ -49,14 +52,19 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
         defaultValue=""
         render={({ field }: { field: FieldValues }) => (
           <div>
-            {field.type === "select" ? (
-              <select {...field}>
-                {field.options.map((item: Option) => (
-                  <option key={item.value} value={item.value}>
+            {type === "select" && options ? (
+              <Core.Select
+                InputclassName={inputClassName}
+                placeholder={placeholder}
+                defaultValue={defaultValue}
+                onValueChange={field.onChange}
+              >
+                {options?.map((item: Option) => (
+                  <SelectItem key={item.value} value={item.value}>
                     {item.label}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
+              </Core.Select>
             ) : field.type === "file" ? (
               <Core.Input
                 {...field}
