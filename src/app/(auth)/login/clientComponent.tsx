@@ -173,6 +173,7 @@ const LoginPageClientComponent = () => {
                       }
                       errors={!isClicked ? loginErrors : forgotPasswordErrors}
                       type={field.type}
+                      className="mb-5"
                       inputClassName="mt-2 mb-5"
                       labelClassName="my-5"
                       seePassword={handleSeePassword}

@@ -135,6 +135,7 @@ const RegisterPageClientComponent = () => {
                   {...field}
                   control={control}
                   errors={errors}
+                  className="mb-5"
                   type={field.type}
                   inputClassName="mt-2 mb-5"
                   labelClassName="my-5"

@@ -42,7 +42,7 @@ const ControllerInput: React.FC<ControllerInputProps> = (props) => {
     seePassword,
   } = props;
   return (
-    <div className={cn("mb-5", className)}>
+    <div className={cn(className)}>
       <Core.Label name={name} LabelclassName={labelClassName}>
         {label}
       </Core.Label>
