@@ -46,7 +46,8 @@ const CommandRole: React.FC<CommandRoleProps> = (props) => {
                 control={commandRoleControl}
                 defaultValue={defaultValues[field.name]}
                 errors={commandRoleErrors}
-                inputClassName="focus:border-lime-500 rounded mt-3"
+                inputClassName="focus:border-lime-500 mb-5 rounded mt-3"
+                className="py-3"
               />
             ))}
           </Fragments.AdminFormDataTabel>

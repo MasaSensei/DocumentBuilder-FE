@@ -8,9 +8,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Fragments from "@/components/fragments";
 
 export const commandMenuSchema = z.object({
-  name: z.string(),
-  path: z.string(),
-  isSubmenu: z.string(),
+  name: z
+    .string({
+      required_error: "Title is required",
+    })
+    .nonempty(),
+  title: z
+    .string({
+      required_error: "Title is required",
+    })
+    .nonempty(),
+  path: z
+    .string({
+      required_error: "Title is required",
+    })
+    .nonempty(),
+  isSubmenu: z.string().nonempty(),
+  parent_name: z.string().optional(),
+  icon: z.string().optional(),
 });
 
 interface Option {
@@ -56,6 +71,7 @@ const CommandMenu: React.FC<CommandMenuProps> = (props) => {
                 errors={commandMenuErrors}
                 options={field.options}
                 inputClassName="focus:border-lime-500 rounded mt-3"
+                className="py-3"
               />
             ))}
           </Fragments.AdminFormDataTabel>

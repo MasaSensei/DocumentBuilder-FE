@@ -16,7 +16,7 @@ const AdminDataTabelButton: React.FC<AdminDataTabelButtonProps> = (props) => {
         <Button
           variant={"outline"}
           asChild
-          className="bg-transparent border-slate-800 me-4 hover:bg-lime-500 hover:border-lime-500 hover:text-white text-slate-800"
+          className="bg-white border-slate-800 me-4 hover:bg-lime-500 hover:border-lime-500 hover:text-white text-slate-800"
         >
           <Link href={link}>Back</Link>
         </Button>

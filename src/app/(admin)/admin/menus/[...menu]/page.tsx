@@ -3,13 +3,27 @@
 import { notFound, useParams } from "next/navigation";
 import CommandMenu, { commandMenuSchema } from "./commandMenu";
 import { z } from "zod";
+import { AuthMenu } from "@/features/menus/authMenu";
+import { AuthStore } from "@/features/store/authStore";
 
 const fields = [
+  {
+    name: "title",
+    type: "text",
+    label: "Title",
+    placeholder: "Enter Menu Title",
+  },
   {
     name: "name",
     type: "text",
     label: "Name",
     placeholder: "Enter Menu Name",
+  },
+  {
+    name: "icon",
+    type: "text",
+    label: "Icon",
+    placeholder: "Enter Menu Icon",
   },
   {
     name: "path",
@@ -33,20 +47,48 @@ const fields = [
       },
     ],
   },
+  {
+    name: "parent_name",
+    type: "text",
+    label: "Parent Name",
+    placeholder: "Enter Parent Name",
+  },
 ];
-
-const onSubmit = async (data: z.infer<typeof commandMenuSchema>) => {
-  const newData = {
-    name: data.name,
-    path: data.path,
-    is_submenu: data.isSubmenu === "true" ? true : false,
-  };
-  console.log(newData);
-};
 
 const MenusCrud = () => {
   const params = useParams();
+  const { PostData } = AuthMenu();
 
+  const { token } = AuthStore((s) => ({
+    token: s.token,
+  }));
+
+  const { title, is_submenu, path, parent_name, name } = AuthMenu((s) => ({
+    title: s.title,
+    is_submenu: s.is_submenu,
+    path: s.path,
+    parent_name: s.parent_name,
+    name: s.name,
+  }));
+
+  const onSubmitCreateMenu = async (
+    data: z.infer<typeof commandMenuSchema>
+  ) => {
+    const newData = {
+      name: data.name,
+      title: data.title,
+      path: data.path,
+      icon_name: data.icon,
+      parent_name: data.parent_name === "" ? null : data.parent_name,
+      is_submenu: data.isSubmenu === "true" ? true : false,
+    };
+    try {
+      await PostData(newData, token);
+      console.log(newData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {params.menu[0] === "create" ? (
@@ -55,7 +97,7 @@ const MenusCrud = () => {
           desription="Create Menu"
           fields={fields}
           defaultValues={{}}
-          onSubmit={onSubmit as any}
+          onSubmit={onSubmitCreateMenu as any}
         />
       ) : (
         notFound()

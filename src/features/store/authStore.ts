@@ -50,6 +50,7 @@ export const AuthStore = create(
               email,
               open_id: "email",
               password,
+              type_action: "login",
             }
           );
           if (response.status === 200) {
